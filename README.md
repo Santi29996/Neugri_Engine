@@ -1,6 +1,6 @@
 # Neugri Engine
 
-Motor 3D hecho desde cero en C++20 + OpenGL para la asignatura de **Motores**.
+Motor 3D hecho en C++ + OpenGL para la asignatura de **Motores**.
 Esta versión (**v0.1**) corresponde a la **Entrega 1: Visualizador de geometría**: carga de modelos FBX con drag & drop, texturas, jerarquía de GameObjects con componentes, cámara con controles de Unity y un editor hecho con Dear ImGui (docking).
 
 - **Repositorio:** https://github.com/Santi29996/Repositorio-Personal
