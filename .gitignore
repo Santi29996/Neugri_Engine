@@ -1,0 +1,17 @@
+# Build folders
+build/
+build-*/
+out/
+.vs/
+.vscode/
+*.user
+CMakeSettings.json
+CMakeUserPresets.json
+
+# Runtime generated files
+imgui.ini
+screenshot.bmp
+
+# Packaged releases
+dist/
+*.zip
