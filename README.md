@@ -95,35 +95,6 @@ Todas las ventanas se pueden acoplar (docking), mover y mostrar/esconder desde *
 - Callback de depuración de OpenGL (`GL_DEBUG_OUTPUT`) en las builds Debug.
 - El motor fija el directorio de trabajo en la carpeta del `.exe`, así que encuentra `Assets/` aunque se lance desde otro sitio.
 
-## Comentarios para el profesor
-
-- **Separación motor / editor:** el código está en `src/Engine` (librería estática `Engine`, sin ninguna dependencia de ImGui) y `src/Editor` (librería `Editor`). El editor es un módulo más que se añade desde `main.cpp` (`app.AddModule(std::make_unique<Editor::ModuleEditor>())`); el motor no incluye ninguna cabecera del editor. Los componentes no se dibujan a sí mismos: el `WindowInspector` del editor los pinta según su tipo.
-- **Módulos** (en orden de ejecución): `Window` (SDL3 + contexto OpenGL + glad), `Input`, `Resources` (DevIL, log de Assimp, caché de texturas/mallas, textura checkers), `Scene` (árbol de GameObjects, selección, ficheros arrastrados), `Camera3D`, `Renderer3D` y, si existe, `Editor`. El orden de pintado es: geometría → debug (grid, AABB, normales) → editor → `SDL_GL_SwapWindow` (en `Application`).
-- **GameObjects y componentes:** `GameObject` tiene hijos (`std::unique_ptr`), puntero al padre y una lista de componentes (`ComponentTransform` siempre, `ComponentMesh` y `ComponentMaterial`). Global = global del padre × local.
-- **Importadores:** `ModelImporter` (Assimp) y la carga de texturas en `ModuleResources` (DevIL). Ningún tipo de Assimp sale de `ModelImporter.cpp` ni de DevIL de `ModuleResources.cpp`.
-- **Baker House:** el FBX viene de Blender 2.78 con una rotación de -90° en X y escala 100 en los nodos, pero la geometría ya está en Y-up. Si se aplica la rotación tal cual, la casa sale tumbada. Lo explicamos en la consola al cargarla y se puede desactivar.
-- **Modelos propios:** *Lantern* y *BoomBox* (Khronos glTF Sample Assets, licencia **CC0**), convertidos a FBX con un canal de textura difusa.
-- **Dependencias:** se descargan con CMake `FetchContent` desde sus repositorios oficiales (SDL 3.2.24, Assimp 5.4.3, Dear ImGui 1.92.2b docking, DevIL 1.8.0 + libpng 1.6.50 + zlib 1.3.1, glm 1.0.1). glad (OpenGL 4.6 core) está en `third_party/`.
-
-## Compilar desde el código
-
-Requisitos: CMake ≥ 3.24, git y Visual Studio 2022/2026 (o cualquier compilador C++20).
-
-```bash
-# Visual Studio
-cmake --preset vs2022
-cmake --build --preset vs2022-release
-
-# Ninja (Windows/Linux)
-cmake --preset ninja-release
-cmake --build --preset ninja-release
-
-# Carpeta de release con la estructura de la entrega
-cmake --install build/vs2022 --config Release --component Engine --prefix dist/NeugriEngine_v0.1
-```
-
-El ejecutable, las DLL y `Assets/` quedan en `build/<preset>/bin/`.
-
 ## Licencia
 
 [MIT](LICENSE.md). Las licencias de las librerías y de los modelos de terceros están en la carpeta [`Licences/`](Licences).
